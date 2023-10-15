@@ -3,4 +3,6 @@ from django.urls import path
 
 urlpatterns = [
     path("webhook", views.WebHook.as_view()),
+    path("search",views.searchbook),
+    path("chatbot",views.chatInterface)
 ]

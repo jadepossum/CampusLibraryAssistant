@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+    <h1>Search</h1>
+</body>
+<form method="post" action="/search">
+    {% csrf_token %}
+    <label for="Title">book name:</label>
+    <input type="text" name="Title" /><br />
+    <input type="submit" />
+</form>
+<form method="get" action="">
+    <input type="search" name="location" placeholder="Search.." />
+    <input type="submit" value="Go" />
+    </form>
+
+</html>

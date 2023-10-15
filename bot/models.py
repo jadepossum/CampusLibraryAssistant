@@ -28,3 +28,19 @@ class Document(models.Model):
 
     class Meta:
         db_table = "document"
+    
+class Book(models.Model):
+    Dept = models.CharField(max_length=80)
+    Title = models.CharField(max_length=200)
+    Author = models.CharField(max_length=80,null=True)
+    PublishedBy = models.CharField(max_length=80,null=True)
+    Edition = models.CharField(max_length=80,null=True)
+    TotalVol = models.IntegerField(null=True)
+    RefVol = models.IntegerField(null=True)
+
+    def __str__(self):
+        return self.Title
+    
+    class Meta:
+        db_table = "books"
+
