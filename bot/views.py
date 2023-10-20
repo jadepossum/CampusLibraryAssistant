@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from django.shortcuts import render , HttpResponse
 from rest_framework.response import Response
 from bot.models import Subject ,Book
+from datetime import date,timedelta
 import json
 
 def searchbook(request):
@@ -13,6 +14,10 @@ def searchbook(request):
             
         return HttpResponse({"not found"})
     return render(request,'search.html')
+
+def deleteAllBooks(request):
+    Book.objects.all().delete()
+    return HttpResponse({"All Books are removed from the database."})
 
 def TitleStrip(request):
     for book in Book.objects.all():
@@ -28,13 +33,43 @@ class WebHook(APIView):
 
         print(json.dumps(request.data, indent=2))
 
+
+
+        if request.data["queryResult"]["intent"]["displayName"] == "CalcDueTime":
+            issuedate = date.fromisoformat(request.data["queryResult"]["parameters"]["issueDate"].split('T')[0])
+            tdelta = timedelta(days=15)
+            returndate = issuedate + tdelta
+            curdate = date.today()
+            responseText = []
+            if(issuedate>curdate):
+                return Response({"fulfillmentMessages": [{"text": {"text": ["Plese enter the date with valid year"]}}]})
+            if(curdate > returndate):
+                return Response({"fulfillmentMessages": [{"text": {"text": ["fined ",(curdate - returndate).days," rupees as of today"]}}]})
+            else:
+                return Response({"fulfillmentMessages": [{"text": {"text": ["return the book on or before "+returndate.strftime("%d-%m-%Y")]}}]})
+
+
+
         if request.data["queryResult"]["intent"]["displayName"] == "checkAvailability":
             textResponse = []
             title = request.data["queryResult"]["parameters"]["title"][0].split('\"')[1].upper().strip()
             for book in Book.objects.all():
                 if book.Title == title:
-                    return Response({"fulfillmentMessages": [{"text": {"text": [book.Title+" is available at the library"]}}]})
-            return Response({"fulfillmentMessages": [{"text": {"text": ["book is not available at the library"]}}]})
+                    resp = book.Title
+                    if book.Author!='-':
+                        resp+=" by "+book.Author
+                    if book.Location:
+                        bloc = book.Location.split(" ")
+                        resp+=" is available at "+bloc[0]+" rack side "+bloc[1]+" in the main stacks area."
+                    else :
+                        resp+=" is available at the library"
+                    textResponse.append({"text": {"text": [resp]}})
+            if textResponse:
+                return Response({"fulfillmentMessages": textResponse})
+            return Response({"fulfillmentMessages": textResponse})
+
+
+
 
         if request.data["queryResult"]["intent"]["displayName"] == "getListSubjects":
             textResponse = []
@@ -44,9 +79,8 @@ class WebHook(APIView):
 
             return Response({"fulfillmentMessages": textResponse})
 
-        if request.data["queryResult"]["intent"]["displayName"] == "checkAvailability":
-            textResponse = [{"text": {"text": "from the other side at checkavailability"}}]
-            return Response({'fulfillmentMessages': textResponse})
+
+
 
         subjectCodes = request.data["queryResult"]["parameters"]["subject"]
 

@@ -6,4 +6,5 @@ urlpatterns = [
     path("search",views.searchbook),
     path("chatbot",views.chatInterface),
     path("TitleStrip",views.TitleStrip),
+    # path("deletebooks",views.deleteAllBooks),
 ]
