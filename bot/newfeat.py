@@ -31,3 +31,13 @@
 # df3=pd.merge(df1.iloc[:4068],df2,on=['Title','Author'],how="left")[['Dept','Title','Author','Location']]
 # df3.to_excel("modifiedBooks.xlsx")
 # print(df3.head())
+
+
+
+
+import itertools
+
+lis = [1,4,6,2,3,9]
+print(list(itertools.accumulate(lis,lambda a,b:a if a>b else b)))
+print(list(itertools.accumulate(lis[::-1],lambda a,b:a if a>b else b)))
+print(list(itertools.accumulate(lis,lambda a,b:a if a<b else b)))

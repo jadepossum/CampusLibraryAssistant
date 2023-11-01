@@ -1,0 +1,16 @@
+https://rohit20001221.pythonanywhere.com/api/v1/webhook
+
+https://stackoverflow.com/questions/56837506/dialogflow-send-custom-payload-json-from-webhook
+
+https://groups.google.com/g/dialogflow-cx-edition-users/c/k49Rgo1Jo64
+
+https://developers.google.com/assistant/df-asdk/rich-responses#df-json-basic-card
+
+https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger
+
+
+University Updates:
+https://www.forum.universityupdates.in/forums/jntu-hyderabad-jntuh.6/
+
+Online Student Services
+https://studentservices.jntuh.ac.in/oss/syllabus.html?type=syllabus
