@@ -27,7 +27,7 @@ class Document(models.Model):
         return self.url
 
     class Meta:
-        db_table = "document"
+        db_table = "DOCUMENTS"
     
 class Book(models.Model):
     Dept = models.CharField(max_length=80)
@@ -39,7 +39,7 @@ class Book(models.Model):
         return self.Title
     
     class Meta:
-        db_table = "books"
+        db_table = "BOOKS"
 
 class PQP(models.Model):
     Regulation = models.CharField(max_length=10)
@@ -47,10 +47,10 @@ class PQP(models.Model):
     Branch = models.CharField(max_length=10)
     Subject = models.CharField(max_length=100,null=True)
     Year = models.CharField(max_length=15,null=True)
-    link = models.URLField()
+    Link = models.URLField()
 
     def __str__(self):
         return self.Regulation
     
     class Meta:
-        db_table = "pqp"
+        db_table = "PQP"
