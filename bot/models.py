@@ -54,3 +54,17 @@ class PQP(models.Model):
     
     class Meta:
         db_table = "PQP"
+
+class PPT(models.Model):
+    Regulation = models.CharField(max_length=10)
+    Semester = models.IntegerField()
+    Branch = models.CharField(max_length=10)
+    Subject = models.CharField(max_length=100,null=True)
+    Year = models.CharField(max_length=15,null=True)
+    Link = models.URLField()
+
+    def __str__(self):
+        return self.Regulation
+    
+    class Meta:
+        db_table = "PPT"
