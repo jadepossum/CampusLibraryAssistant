@@ -5,6 +5,7 @@ urlpatterns = [
     path("webhook", views.WebHook.as_view()),
     path("search",views.searchbook),
     path("chatbot",views.chatInterface),
+    path("libDetails",views.LibDetails),
     path("TitleStrip",views.TitleStrip),
     # path("deletebooks",views.deleteAllBooks),
 ]
