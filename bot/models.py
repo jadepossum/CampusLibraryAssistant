@@ -43,7 +43,7 @@ class Book(models.Model):
 
 class PQP(models.Model):
     Regulation = models.CharField(max_length=10)
-    Semester = models.IntegerField()
+    Semester = models.CharField(max_length=10)
     Branch = models.CharField(max_length=10)
     Subject = models.CharField(max_length=100,null=True)
     Year = models.CharField(max_length=15,null=True)
@@ -57,7 +57,7 @@ class PQP(models.Model):
 
 class PPT(models.Model):
     Regulation = models.CharField(max_length=10)
-    Semester = models.IntegerField()
+    Semester = models.CharField(max_length=10)
     Branch = models.CharField(max_length=10)
     Subject = models.CharField(max_length=100,null=True)
     Year = models.CharField(max_length=15,null=True)

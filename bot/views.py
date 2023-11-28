@@ -5,15 +5,32 @@ from bot.models import Subject ,Book ,PQP ,PPT
 from datetime import date,timedelta
 import json
 
+def entrance(request):
+    return render(request,'index.html')
+
 def searchbook(request):
+    qs = Book.objects
     if request.method == "POST":
-        title = request.POST.get("Title").upper().strip()
-        for book in Book.objects.all():
-            if book.Title == title:
-                return HttpResponse({"found"})
-            
-        return HttpResponse({"not found"})
-    return render(request,'search.html')
+        title = request.POST.get("Title")
+        if title:
+            title = title.upper().strip()
+            Words = title.split()
+            wlen = len(Words)
+            for i in Words:
+                if i!='':
+                    qs = qs.filter(Title__icontains=i)
+        author = request.POST.get("Author")
+        if author:
+            author = author.upper().strip()
+            Words = author.split()
+            print("Author",Words)
+            wlen = len(Words)
+            for i in Words:
+                if i!='':
+                    qs = qs.filter(Author__icontains=i)
+    qs = qs.all()    
+    return render(request,'search.html',{'availableBooks':qs.all()})
+
 
 def deleteAllBooks(request):
     Book.objects.all().delete()
@@ -56,8 +73,23 @@ class WebHook(APIView):
         if request.data["queryResult"]["intent"]["displayName"] == "checkAvailability":
             textResponse = []
             title = request.data["queryResult"]["parameters"]["title"][0].split('\"')[1].upper().strip()
+            Words = title.split()
+            wlen = len(Words)
+            Filter = False
+            # availCount = 0
             for book in Book.objects.all():
-                if book.Title == title:
+                BookTitle = book.Title
+                #testing
+                Filter = False
+                count = 0
+                for i in Words:
+                    if i in BookTitle:
+                        count+=1
+                if count/wlen>0.5:
+                    Filter = True
+                if Filter:
+                # if book.Title == title:
+                    # availCount+=1
                     resp = book.Title
                     if book.Author!='-':
                         resp+=" by "+book.Author
@@ -67,8 +99,47 @@ class WebHook(APIView):
                     else :
                         resp+=" is available at the library"
                     textResponse.append({"text": {"text": [resp]}})
+            textResponse.append({"text": {"text": ["See all available Titles at:\nhttps://saikrishnakota.pythonanywhere.com/search"]}})
             if textResponse:
                 return Response({"fulfillmentMessages": textResponse})
+            textResponse.append({"text": {"text": [request.data["queryResult"]["parameters"]["title"][0] + " is currently unavailable."]}})
+            return Response({"fulfillmentMessages": textResponse})
+
+
+
+        if request.data["queryResult"]["intent"]["displayName"] == "checkAvailability::byAuthor":
+            print("checkAvailability::byAuthor")
+            textResponse = []
+            Author = request.data["queryResult"]["parameters"]["person"]["name"].upper().strip()
+            Words = Author.split()
+            wlen = len(Words)
+            Filter = False
+            # availCount = 0
+            for book in Book.objects.all():
+                BookAuthor = book.Author
+                #testing
+                Filter = False
+                count = 0
+                for i in Words:
+                    if i in BookAuthor:
+                        print(i,BookAuthor)
+                        count+=1
+                if count/wlen>0.5:
+                    Filter = True
+                if Filter:
+                # if book.Title == title:
+                    # availCount+=1
+                    resp = book.Title+" by "+book.Author
+                    if book.Location:
+                        bloc = book.Location.split(" ")
+                        resp+=" is available at "+bloc[0]+" rack side "+bloc[1]+" in the main stacks area."
+                    else :
+                        resp+=" is available at the library"
+                    textResponse.append({"text": {"text": [resp]}})
+            textResponse.append({"text": {"text": ["See all available Titles at:\nhttps://saikrishnakota.pythonanywhere.com/search"]}})
+            if textResponse:
+                return Response({"fulfillmentMessages": textResponse})
+            textResponse.append({"text": {"text": ["Books by"+request.data["queryResult"]["parameters"]["person"]["name"] + " are currently unavailable."]}})
             return Response({"fulfillmentMessages": textResponse})
 
 

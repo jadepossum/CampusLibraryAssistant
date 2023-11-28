@@ -35,9 +35,25 @@
 
 
 
-import itertools
+# import itertools
 
-lis = [1,4,6,2,3,9]
-print(list(itertools.accumulate(lis,lambda a,b:a if a>b else b)))
-print(list(itertools.accumulate(lis[::-1],lambda a,b:a if a>b else b)))
-print(list(itertools.accumulate(lis,lambda a,b:a if a<b else b)))
+# lis = [1,4,6,2,3,9]
+# print(list(itertools.accumulate(lis,lambda a,b:a if a>b else b)))
+# print(list(itertools.accumulate(lis[::-1],lambda a,b:a if a>b else b)))
+# print(list(itertools.accumulate(lis,lambda a,b:a if a<b else b)))
+
+a = "basic mechanical"
+b = a.split()
+print(b)
+count  = 0
+title = "basics of mechanical engineering"
+for i in b:
+    if i in title:
+        print(i)
+        count += 1
+print(count,len(b),count/len(b))
+
+if(count/len(b)>0.5):
+    print("true")
+else:
+    print("false")
