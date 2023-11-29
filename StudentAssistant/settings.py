@@ -25,7 +25,6 @@ SECRET_KEY = "bdn4(z629m5qra*9kdc-ljeyuz^0whuelx9qm)l1(@2*+mkv2!"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ["saikrishnakota.pythonanywhere.com", "127.0.0.1"]
 ALLOWED_HOSTS = ["*"]
 
 
