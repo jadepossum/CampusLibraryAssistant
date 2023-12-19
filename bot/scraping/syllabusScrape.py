@@ -17,16 +17,19 @@ for year in year_list:
     click(year)
     branches = find_all(S("#intro > section > nav1 > p > a"))
     branch_list = [branch.web_element.text for branch in branches]
- 
+    branch_href = [branch.web_element.get_attribute('href') for branch in branches]
     b = {'CSE','ECE','IT','EEE','ME'}
-    a = b.copy()
-    for branch in branch_list:
+    for i,branch in enumerate(branch_list):
+            z = ""
             for item in b:
-                  if item in a and item in branch:
-                        print(branch)
-                        a.discard(item)
+                if item in branch:
+                    z = item
+            data.append(('R18',year,z,branch,branch_href[i]))
     s = find_all(S('#intro > section > nav1 > span > a:nth-child(3)'))[0].web_element
     print(s)
     click(s)
 
 kill_browser()
+pqp = pd.DataFrame.from_records(data,columns=['Regulation','Year','Branch','branch_n','Link'])
+print(pqp)
+pqp.to_excel('Syllabus(list).xlsx')
